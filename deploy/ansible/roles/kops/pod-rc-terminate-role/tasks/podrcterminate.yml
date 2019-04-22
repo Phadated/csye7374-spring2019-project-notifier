@@ -1,0 +1,11 @@
+---
+
+- name: Delete config
+  shell: kubectl delete configmap my-config1
+
+- name: Delete secrets
+  shell: kubectl delete secret my-secret1
+
+- name: Delete deployment
+  shell: kubectl delete deployment csye7374-assign3-rc-notifier
+

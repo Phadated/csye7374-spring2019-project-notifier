@@ -1,0 +1,27 @@
+---
+
+- name: Fetching aws account id
+  shell: aws sts get-caller-identity --output text --query 'Account'
+  register: accountid1
+
+
+- name: Run Secret file
+  shell: kubectl create secret generic my-secret1 --from-file=../Secrets1.json
+
+- name: Run Config file
+  shell: kubectl create configmap my-config1 --from-file=../config1.json
+
+
+- name: Create Deployment for notifier
+  vars:
+    imageTag: ""
+  shell: cat deployment7374.yaml | sed "s/xyz/{{accountid1.stdout}}/"  | kubectl apply -f -
+  args:
+    chdir: ../k8s/app/
+
+
+
+
+
+
+    
