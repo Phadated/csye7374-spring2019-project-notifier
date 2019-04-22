@@ -1,0 +1,52 @@
+apiVersion: apps/v1               
+kind: Deployment                    
+metadata:
+  name: csye7374-assign3-rc-notifier     
+spec:
+  replicas: 3
+  minReadySeconds: 10
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: csye7374-notifier
+  template:
+    metadata:
+      labels:
+        app: csye7374-notifier
+    spec:
+      volumes:
+      - name: my-config-mount
+        configMap:
+          name: my-config1
+      - name: my-secret-mount
+        secret:
+          secretName: my-secret1
+      
+      containers:
+      - image: xyz.dkr.ecr.us-east-1.amazonaws.com/csye7374_notifier:latest     
+        name: csye7374-notifier
+        command: ["/bin/sh","-c"]
+        args: ["node app.js"]
+        volumeMounts:
+          - name: my-config-mount
+            mountPath: /app/config
+          - name: my-secret-mount
+            mountPath: /app/secret
+        imagePullPolicy: Always   
+       
+        ports:
+        - containerPort: 5001 
+          protocol: TCP
+        resources:
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+      
+
