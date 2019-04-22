@@ -88,7 +88,7 @@ podTemplate(
             dir("deploy/k8s/app"){
                 container('kubectl'){
                     withKubeConfig([credentialsId: 'jenkins', serverUrl: "https://api.${clustername}"]) {
-                        sh "kubectl set image deployment csye7374-assign3-rc-notifier csye7374_notifier=${accountid}.dkr.ecr.us-east-1.amazonaws.com/csye7374_notifier:${BUILD_TIMESTAMP}"
+                        sh "kubectl set image deployment csye7374-assign3-rc-notifier csye7374-notifier=${accountid}.dkr.ecr.us-east-1.amazonaws.com/csye7374_notifier:${BUILD_TIMESTAMP}"
                     }
                 }
             }
